@@ -37,7 +37,7 @@ type MessageHandler func(ctx context.Context, conn *Connection, frame *Frame, pa
 
 // SubscriptionListener represents a subscription listener with pattern matching
 type SubscriptionListener struct {
-	Pattern    string                       // Topic pattern with placeholders like /topic/drone/{droneId}/log
+	Pattern    string                       // Topic pattern with placeholders like /topic/mission/{missionId}/log
 	Regex      *regexp.Regexp               // Compiled regex for matching
 	ParamNames []string                     // Parameter names extracted from pattern
 	Callback   SubscriptionListenerCallback // Callback function with extracted parameters
@@ -217,7 +217,7 @@ func generateMessageID() string {
 }
 
 // AddSubscriptionListener adds a subscription listener with pattern matching
-// pattern: topic pattern with placeholders like "/topic/drone/{droneId}/log"
+// pattern: topic pattern with placeholders like "/topic/mission/{missionId}/log"
 // callback: function to call when a matching subscription is made
 func (s *StompServer) AddSubscriptionListener(pattern string, callback SubscriptionListenerCallback) error {
 	// Convert pattern to regex and extract parameter names
@@ -246,7 +246,7 @@ func (s *StompServer) AddSubscriptionListener(pattern string, callback Subscript
 	return nil
 }
 
-// convertPatternToRegex converts a pattern like "/topic/drone/{droneId}/log" to regex
+// convertPatternToRegex converts a pattern like "/topic/mission/{missionId}/log" to regex
 func (s *StompServer) convertPatternToRegex(pattern string) (string, []string, error) {
 	var paramNames []string
 	regexPattern := pattern

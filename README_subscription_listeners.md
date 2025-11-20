@@ -26,25 +26,10 @@ server := NewStompServer(upgrader)
 ### 2. 添加订阅监听器
 
 ```go
-// 监听无人机日志订阅
-err := server.AddSubscriptionListener("/topic/drone/{droneId}/log", func(topic string, params map[string]string) {
-    droneId := params["droneId"]
-    fmt.Printf("无人机 %s 订阅了日志: %s\n", droneId, topic)
-    // 在这里实现你的业务逻辑
-})
-
 // 监听任务更新订阅
 err = server.AddSubscriptionListener("/topic/mission/{missionId}/updates", func(topic string, params map[string]string) {
     missionId := params["missionId"]
     fmt.Printf("任务 %s 订阅了更新: %s\n", missionId, topic)
-    // 在这里实现你的业务逻辑
-})
-
-// 监听复杂模式（多个参数）
-err = server.AddSubscriptionListener("/topic/fleet/{fleetId}/drone/{droneId}/telemetry", func(topic string, params map[string]string) {
-    fleetId := params["fleetId"]
-    droneId := params["droneId"]
-    fmt.Printf("机队 %s 中的无人机 %s 订阅了遥测数据: %s\n", fleetId, droneId, topic)
     // 在这里实现你的业务逻辑
 })
 ```
@@ -67,9 +52,7 @@ http.ListenAndServe(":8080", nil)
 
 | 模式 | 匹配的topic | 提取的参数 |
 |------|-------------|------------|
-| `/topic/drone/{droneId}/log` | `/topic/drone/TL2025001/log` | `{"droneId": "TL2025001"}` |
 | `/topic/mission/{missionId}/updates` | `/topic/mission/MISSION001/updates` | `{"missionId": "MISSION001"}` |
-| `/topic/fleet/{fleetId}/drone/{droneId}/telemetry` | `/topic/fleet/FLEET01/drone/TL2025001/telemetry` | `{"fleetId": "FLEET01", "droneId": "TL2025001"}` |
 
 ## 回调函数签名
 
