@@ -290,8 +290,8 @@ func (s *StompServer) extractParameters(listener *SubscriptionListener, topic st
 // triggerSubscriptionListeners triggers matching subscription listeners when a subscription is made
 func (s *StompServer) triggerSubscriptionListeners(ctx context.Context, destination string) {
 	s.listenerMutex.RLock()
-	listeners := make([]*SubscriptionListener, len(s.subscriptionListeners))
-	copy(listeners, s.subscriptionListeners)
+	// 使用切片表达式共享底层数组，而不是创建完整副本，减少内存消耗
+	listeners := s.subscriptionListeners[:]
 	s.listenerMutex.RUnlock()
 
 	for _, listener := range listeners {
